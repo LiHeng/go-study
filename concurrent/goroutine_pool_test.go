@@ -2,6 +2,7 @@ package concurrent
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
 	"testing"
 	"time"
@@ -118,4 +119,11 @@ func TestWorker(t *testing.T) {
 	time.Sleep(time.Second * 2)
 	dispatcher.Stop()
 	fmt.Printf("after dispatcher run\n")
+}
+
+func TestGOMAXPROCS(t *testing.T) {
+	numGoroutine := runtime.NumGoroutine()
+	fmt.Printf("number of goroutines: %d\n", numGoroutine)
+	fmt.Printf("number of cpu: %d\n", runtime.NumCPU())
+	fmt.Printf("GOMAXPROCS: %d\n", runtime.GOMAXPROCS(-1))
 }

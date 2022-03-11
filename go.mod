@@ -3,28 +3,22 @@ module TestAll
 go 1.17
 
 require (
-	github.com/antonfisher/nested-logrus-formatter v1.3.1 // indirect
-	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/antonfisher/nested-logrus-formatter v1.3.1
+	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-resty/resty/v2 v2.7.0
+	github.com/h2non/filetype v1.1.3
+	github.com/hashicorp/go-uuid v1.0.1
+	github.com/rogierlommers/logrus-redis-hook v0.0.0-20210902125448-a9c74cf92631
+	github.com/sirupsen/logrus v1.8.1
+	github.com/spf13/cobra v1.3.0
+)
+
+require (
 	github.com/garyburd/redigo v1.6.3 // indirect
-	github.com/go-resty/resty/v2 v2.7.0 // indirect
-	github.com/h2non/filetype v1.1.3 // indirect
-	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/magiconair/properties v1.8.5 // indirect
-	github.com/mitchellh/mapstructure v1.4.3 // indirect
-	github.com/pelletier/go-toml v1.9.4 // indirect
-	github.com/rogierlommers/logrus-redis-hook v0.0.0-20210902125448-a9c74cf92631 // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
-	github.com/spf13/afero v1.6.0 // indirect
-	github.com/spf13/cast v1.4.1 // indirect
-	github.com/spf13/cobra v1.3.0 // indirect
-	github.com/spf13/jwalterweatherman v1.1.0 // indirect
+	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/onsi/gomega v1.18.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.10.0 // indirect
-	github.com/subosito/gotenv v1.2.0 // indirect
 	golang.org/x/net v0.0.0-20211029224645-99673261e6eb // indirect
-	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
-	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/ini.v1 v1.66.2 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 )
