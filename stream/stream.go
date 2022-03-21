@@ -11,7 +11,7 @@ const (
 )
 
 type Stream struct {
-	source <-chan interface{}
+	source <-chan any
 }
 
 type rxOptions struct {
@@ -19,40 +19,40 @@ type rxOptions struct {
 	workers          int
 }
 
-type GenerateFunc func(source <-chan interface{})
+type GenerateFunc func(source <-chan any)
 
-type KeyFunc func(item interface{}) interface{}
+type KeyFunc func(item any) any
 
 // ForEachFunc 对每个item执行操作
-type ForEachFunc func(item interface{})
+type ForEachFunc func(item any)
 
 // FilterFunc 过滤函数
-type FilterFunc func(item interface{}) bool
+type FilterFunc func(item any) bool
 
 // Option defines the method to customize a Stream.
 type Option func(opts *rxOptions)
 
 // WalkFunc defines the method to walk through all the elements in a Stream.
-type WalkFunc func(item interface{}, pipe chan<- interface{})
+type WalkFunc func(item any, pipe chan<- any)
 
 // LessFunc defines the method to compare the elements in a Stream.
-type LessFunc func(a, b interface{}) bool
+type LessFunc func(a, b any) bool
 
 type PlaceholderType struct{}
 
 var Placeholder PlaceholderType
 
 // Range 创建阶段/数据获取阶段
-func Range(source <-chan interface{}) Stream {
+func Range(source <-chan any) Stream {
 	return Stream{
 		source: source,
 	}
 }
 
 // Just 通过可变参数模式创建 stream
-func Just(items ...interface{}) Stream {
+func Just(items ...any) Stream {
 	// 带缓冲的channel
-	source := make(chan interface{}, len(items))
+	source := make(chan any, len(items))
 	for _, item := range items {
 		source <- item
 	}
@@ -62,7 +62,7 @@ func Just(items ...interface{}) Stream {
 
 // From 通过函数创建 stream
 func From(generate GenerateFunc) Stream {
-	source := make(chan interface{})
+	source := make(chan any)
 	GoSafe(func() {
 		defer close(source)
 		generate(source)
@@ -76,10 +76,10 @@ func From(generate GenerateFunc) Stream {
 // }
 
 func (s Stream) Distinct(keyFunc KeyFunc) Stream {
-	source := make(chan interface{})
+	source := make(chan any)
 	GoSafe(func() {
 		defer close(source)
-		keys := make(map[interface{}]PlaceholderType)
+		keys := make(map[any]PlaceholderType)
 		for item := range s.source {
 			// 自定义去重逻辑
 			key := keyFunc(item)
@@ -95,7 +95,7 @@ func (s Stream) Distinct(keyFunc KeyFunc) Stream {
 
 // Filter 新的 Stream 中 channel 里面的数据顺序是随机的。
 func (s Stream) Filter(filterFunc FilterFunc, opts ...Option) Stream {
-	return s.Walk(func(item interface{}, pipe chan<- interface{}) {
+	return s.Walk(func(item any, pipe chan<- any) {
 		if filterFunc(item) {
 			pipe <- item
 		}
@@ -112,7 +112,7 @@ func (s Stream) Walk(fn WalkFunc, opts ...Option) Stream {
 }
 
 func (s Stream) Sort(fn LessFunc) Stream {
-	var items []interface{}
+	var items []any
 	for item := range s.source {
 		items = append(items, item)
 	}
@@ -123,7 +123,7 @@ func (s Stream) Sort(fn LessFunc) Stream {
 }
 
 func (s Stream) walkUnlimited(fn WalkFunc, option *rxOptions) Stream {
-	pipe := make(chan interface{}, option.workers)
+	pipe := make(chan any, option.workers)
 
 	go func() {
 		var wg sync.WaitGroup
@@ -144,7 +144,7 @@ func (s Stream) walkUnlimited(fn WalkFunc, option *rxOptions) Stream {
 }
 
 func (s Stream) walkLimited(fn WalkFunc, option *rxOptions) Stream {
-	pipe := make(chan interface{}, option.workers)
+	pipe := make(chan any, option.workers)
 
 	go func() {
 		var wg sync.WaitGroup

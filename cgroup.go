@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"TestAll/cobra_repo"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -12,7 +12,7 @@ const (
 )
 
 func main() {
-	cobra_repo.Execute()
+	// cobra_repo.Execute()
 	// blocks := make([][MB]byte, 0)
 	// fmt.Println("Child pid is", os.Getpid())
 	//
@@ -20,6 +20,8 @@ func main() {
 	// 	blocks = append(blocks, [MB]byte{})
 	// 	printMemUsage()
 	// }
+	engine := gin.Default()
+	_ = engine.Run()
 }
 
 func printMemUsage() {
